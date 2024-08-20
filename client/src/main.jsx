@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import ReactDOM from "react-dom/client";
-import Posts from "./routes/Posts.jsx";
+import Posts, { loader as PostLoader } from "./routes/Posts.jsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootLayout from "./routes/RootLayout.jsx";
@@ -13,6 +13,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Posts />,
+        loader: PostLoader,
         children: [{ path: "/create-post", element: <NewPost /> }],
       },
     ],

@@ -26,7 +26,13 @@
 .actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 0.5rem;
+
+}
+.actions a{
+  color: #e5d5f7;
+  padding-right: 1rem;
 }
 
 .actions button {
