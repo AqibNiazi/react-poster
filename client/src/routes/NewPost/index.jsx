@@ -1,56 +1,39 @@
-import { useState } from "react";
 import classes from "./NewPost.module.css";
 import Model from "@components/Model";
-import { Link } from "react-router-dom";
-function NewPost({ onAddPost }) {
-  const [enteredBody, setEnteredBody] = useState("");
-  const [enteredTitle, setEnteredTitle] = useState("");
-
-  const bodyChangeHandler = (e) => {
-    setEnteredBody(e.target.value);
-  };
-  const authorChangeHandler = (e) => {
-    setEnteredTitle(e.target.value);
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const postData = {
-      body: enteredBody,
-      author: enteredTitle,
-    };
-    onAddPost(postData);
-  };
+import { Form, Link, redirect } from "react-router-dom";
+function NewPost() {
   return (
     <Model>
-      <form className={classes.form} onSubmit={handleSubmit}>
+      <Form method="post" className={classes.form}>
         <p className="mb-4">
           <label htmlFor="body">Text</label>
-          <textarea
-            id="body"
-            value={enteredBody}
-            required
-            rows={3}
-            onChange={bodyChangeHandler}
-          />
+          <textarea id="body" name="body" required rows={3} />
         </p>
 
         <p className="mb-4">
           <label htmlFor="name">Your name</label>
-          <input
-            type="text"
-            value={enteredTitle}
-            id="name"
-            required
-            onChange={authorChangeHandler}
-          />
+          <input type="text" name="author" id="name" required />
         </p>
         <p className={classes.actions}>
           <Link to="..">Cancel</Link>
           <button type="submit">Submit</button>
         </p>
-      </form>
+      </Form>
     </Model>
   );
 }
 
 export default NewPost;
+export const action = async ({ request }) => {
+  const formData = await request?.formData();
+  const postData = Object.fromEntries(formData);
+
+  fetch("http://localhost:8080/posts", {
+    method: "POST",
+    body: JSON.stringify(postData),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return redirect("/");
+};
